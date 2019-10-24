@@ -1,13 +1,20 @@
-# Kubernetes Instalation
+# Kubernetes Instalation & Resource Management
 
-### manual
+## Table of Contents
+* [Manual Instalation](#Manual-Instalation)
+* [Script Installatin](#Script-Installatin)
+* [Cluster Check](#Cluster-Check)
+* [Deploy Simple Application](#Deploy-Simple-Application)
+* [Resource Management](#Resource-Management)
+
+### [Manual Instalation](./manual/)
 deploy node using vagrant and install kubernetes cluster manually
 
-### script
+### [Script Installatin](./script)
 deploy node using vagrant and bootstrap kubernetes installaion
 
 
-### cluster check
+### Cluster Check
 
 	[root@k8s ~]# kubectl cluster-info
 	Kubernetes master is running at https://172.42.42.100:6443
@@ -71,7 +78,7 @@ deploy node using vagrant and bootstrap kubernetes installaion
 	kube-system   replicaset.apps/coredns-5644d7b6d9                  2         2         2       157m
 	[root@k8s ~]#
 
-### deploy simple application
+### Deploy Simple Application
 
 	[root@k8s ~]# kubectl run simpleweb --image scottsbaldwin/docker-hello-world  --replicas 2
 	kubectl run --generator=deployment/apps.v1 is DEPRECATED and will be removed in a future version. Use kubectl run --generator=run-pod/v1 or kubectl create instead.
@@ -475,3 +482,289 @@ deploy node using vagrant and bootstrap kubernetes installaion
 	[root@k8s ~]#
 
 
+	[root@k8s ~]# kubectl get namespace
+	NAME              STATUS   AGE
+	default           Active   7d21h
+	kube-node-lease   Active   7d21h
+	kube-public       Active   7d21h
+	kube-system       Active   7d21h
+	nginx-ingress     Active   46h
+	[root@k8s ~]#
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl create namespace tes-quota
+	namespace/tes-quota created
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl get namespace
+	NAME              STATUS   AGE
+	default           Active   7d21h
+	kube-node-lease   Active   7d21h
+	kube-public       Active   7d21h
+	kube-system       Active   7d21h
+	nginx-ingress     Active   46h
+	tes-quota         Active   4s
+	[root@k8s ~]#
+	[root@k8s ~]# cat 02-myquota.yaml
+	apiVersion: v1
+	kind: ResourceQuota
+	metadata:
+	  name: pod-quota
+	spec:
+	  hard:
+	    pods: "2"
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl apply -f 02-myquota.yaml -n tes-quota
+	resourcequota/pod-quota created
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl get quota -n tes-quota
+	NAME        CREATED AT
+	pod-quota   2019-10-24T02:22:18Z
+	[root@k8s ~]# kubectl describe quota pod-quota -n tes-quota
+	Name:       pod-quota
+	Namespace:  tes-quota
+	Resource    Used  Hard
+	--------    ----  ----
+	pods        0     2
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl get all -n tes-quota
+	No resources found in tes-quota namespace.
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl apply -f 02-create-pod1.yaml -n tes-quota
+	pod/quota-pod-1 created
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl get all -n tes-quota
+	NAME              READY   STATUS    RESTARTS   AGE
+	pod/quota-pod-1   1/1     Running   0          60s
+	[root@k8s ~]# kubectl describe quota pod-quota -n tes-quota
+	Name:       pod-quota
+	Namespace:  tes-quota
+	Resource    Used  Hard
+	--------    ----  ----
+	pods        1     2
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl apply -f 02-create-pod2.yaml -n tes-quota
+	pod/quota-pod-2 created
+	[root@k8s ~]# kubectl get all -n tes-quota
+	NAME              READY   STATUS    RESTARTS   AGE
+	pod/quota-pod-1   1/1     Running   0          102s
+	pod/quota-pod-2   1/1     Running   0          14s
+	[root@k8s ~]# kubectl describe quota pod-quota -n tes-quota
+	Name:       pod-quota
+	Namespace:  tes-quota
+	Resource    Used  Hard
+	--------    ----  ----
+	pods        2     2
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl apply -f 02-create-pod3.yaml -n tes-quota
+	Error from server (Forbidden): error when creating "02-create-pod3.yaml": pods "quota-pod-3" is forbidden: exceeded quota: pod-quota, requested: pods=1, used: pods=2, limited: pods=2
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl delete pod/quota-pod-1 pod/quota-pod-2  -n tes-quota
+	pod "quota-pod-1" deleted
+	pod "quota-pod-2" deleted
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl delete quota pod-quota  -n tes-quota
+	resourcequota "pod-quota" deleted
+	[root@k8s ~]# kubectl get quota -n tes-quota
+	No resources found in tes-quota namespace.
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl get namespace
+	NAME              STATUS   AGE
+	default           Active   7d21h
+	kube-node-lease   Active   7d21h
+	kube-public       Active   7d21h
+	kube-system       Active   7d21h
+	nginx-ingress     Active   46h
+	tes-quota         Active   26m
+	[root@k8s ~]# kubectl get quota -n tes-quota
+	No resources found in tes-quota namespace.
+	[root@k8s ~]# cat 03-cpu-quota.yaml
+	apiVersion: v1
+	kind: ResourceQuota
+	metadata:
+	  name: cpu-quota
+	spec:
+	  hard:
+	    requests.cpu: "250m"
+	    limits.cpu: "400m"
+	[root@k8s ~]# kubectl apply -f 03-cpu-quota.yaml -n tes-quota
+	resourcequota/cpu-quota created
+	[root@k8s ~]# kubectl get quota -n tes-quota
+	NAME        CREATED AT
+	cpu-quota   2019-10-24T02:46:33Z
+	[root@k8s ~]# kubectl describe quota cpu-quota -n tes-quota
+	Name:         cpu-quota
+	Namespace:    tes-quota
+	Resource      Used  Hard
+	--------      ----  ----
+	limits.cpu    0     400m
+	requests.cpu  0     250m
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl apply -f 03-create-pod1.yaml  -n tes-quota
+	pod/cpu-pod-1 created
+	[root@k8s ~]# kubectl get all -n tes-quota
+	NAME            READY   STATUS    RESTARTS   AGE
+	pod/cpu-pod-1   1/1     Running   0          7s
+	[root@k8s ~]# kubectl describe quota cpu-quota -n tes-quota
+	Name:         cpu-quota
+	Namespace:    tes-quota
+	Resource      Used  Hard
+	--------      ----  ----
+	limits.cpu    150m  400m
+	requests.cpu  100m  250m
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl apply -f 03-create-pod2.yaml -n tes-quota
+	pod/cpu-pod-2 created
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl get all -n tes-quota
+	NAME            READY   STATUS    RESTARTS   AGE
+	pod/cpu-pod-1   1/1     Running   0          3m58s
+	pod/cpu-pod-2   1/1     Running   0          10s
+	[root@k8s ~]# kubectl describe quota cpu-quota -n tes-quota
+	Name:         cpu-quota
+	Namespace:    tes-quota
+	Resource      Used  Hard
+	--------      ----  ----
+	limits.cpu    400m  400m
+	requests.cpu  250m  250m
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl apply -f 03-create-pod3.yaml -n tes-quota
+	Error from server (Forbidden): error when creating "03-create-pod3.yaml": pods "cpu-pod-3" is forbidden: exceeded quota: cpu-quota, requested: limits.cpu=10m,requests.cpu=10m, used: limits.cpu=400m,requests.cpu=250m, limited: limits.cpu=400m,requests.cpu=250m
+	[root@k8s ~]#
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl apply -f 03-create-pod3.yaml -n tes-quota
+	Error from server (Forbidden): error when creating "03-create-pod3.yaml": pods "cpu-pod-3" is forbidden: exceeded quota: cpu-quota, requested: limits.cpu=10m,requests.cpu=10m, used: limits.cpu=400m,requests.cpu=250m, limited: limits.cpu=400m,requests.cpu=250m
+	[root@k8s ~]#
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl delete pod/cpu-pod-1 pod/cpu-pod-2 -n tes-quota
+	pod "cpu-pod-1" deleted
+	pod "cpu-pod-2" deleted
+	[root@k8s ~]# kubectl delete quota cpu-quota -n tes-quota
+	resourcequota "cpu-quota" deleted
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl get all -n tes-quota
+	No resources found in tes-quota namespace.
+	[root@k8s ~]# kubectl get quota -n tes-quota
+	No resources found in tes-quota namespace.
+	[root@k8s ~]#
+	[root@k8s ~]# cat 04-ram-quota.yaml
+	apiVersion: v1
+	kind: ResourceQuota
+	metadata:
+	  name: ram-quota
+	  namespace: tes-quota
+	spec:
+	  hard:
+	    requests.memory: "250Mi"
+	    limits.memory: "400Mi"
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl apply -f 04-ram-quota.yaml
+	resourcequota/ram-quota created
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl get quota -n tes-quota
+	NAME        CREATED AT
+	ram-quota   2019-10-24T03:16:12Z
+	[root@k8s ~]# kubectl describe quota ram-quota -n tes-quota
+	Name:            ram-quota
+	Namespace:       tes-quota
+	Resource         Used  Hard
+	--------         ----  ----
+	limits.memory    0     400Mi
+	requests.memory  0     250Mi
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl apply -f 04-create-pod1.yaml
+	pod/cpu-pod-1 created
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl get all -n tes-quota
+	NAME            READY   STATUS    RESTARTS   AGE
+	pod/cpu-pod-1   1/1     Running   0          12s
+	[root@k8s ~]# kubectl describe quota ram-quota -n tes-quota
+	Name:            ram-quota
+	Namespace:       tes-quota
+	Resource         Used   Hard
+	--------         ----   ----
+	limits.memory    150Mi  400Mi
+	requests.memory  100Mi  250Mi
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl apply -f 04-create-pod2.yaml
+	pod/cpu-pod-2 created
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl describe quota ram-quota -n tes-quota
+	Name:            ram-quota
+	Namespace:       tes-quota
+	Resource         Used   Hard
+	--------         ----   ----
+	limits.memory    400Mi  400Mi
+	requests.memory  250Mi  250Mi
+	[root@k8s ~]# kubectl get all -n tes-quota
+	NAME            READY   STATUS    RESTARTS   AGE
+	pod/cpu-pod-1   1/1     Running   0          3m42s
+	pod/cpu-pod-2   1/1     Running   0          30s
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl apply -f 04-create-pod3.yaml
+	Error from server (Forbidden): error when creating "04-create-pod3.yaml": pods "cpu-pod-3" is forbidden: exceeded quota: ram-quota, requested: limits.memory=150Mi,requests.memory=100Mi, used: limits.memory=400Mi,requests.memory=250Mi, limited: limits.memory=400Mi,requests.memory=250Mi
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl delete pod/cpu-pod-1 pod/cpu-pod-2 -n tes-quota
+	pod "cpu-pod-1" deleted
+	pod "cpu-pod-2" deleted
+	[root@k8s ~]#
+	[root@k8s ~]#
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl get quota -n tes-quota
+	NAME        CREATED AT
+	ram-quota   2019-10-24T03:16:12Z
+	[root@k8s ~]# kubectl delete quota ram-quota -n tes-quota
+	resourcequota "ram-quota" deleted
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl get all -n tes-quota
+	No resources found in tes-quota namespace.
+	[root@k8s ~]# kubectl apply -f 05-limit-resource.yaml
+	limitrange/cpu-limit created
+	[root@k8s ~]#
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl get limits -n tes-quota
+	NAME        CREATED AT
+	cpu-limit   2019-10-24T03:43:59Z
+	[root@k8s ~]# kubectl describe limits cpu-limit -n tes-quota
+	Name:       cpu-limit
+	Namespace:  tes-quota
+	Type        Resource  Min  Max  Default Request  Default Limit  Max Limit/Request Ratio
+	----        --------  ---  ---  ---------------  -------------  -----------------------
+	Container   cpu       -    -    100m             200m           -
+	[root@k8s ~]#
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl apply -f 05-create-pod1.yaml
+	pod/cpu-pod-1 created
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl describe pod/cpu-pod-1 -n tes-quota | egrep "Limits|Requests" -A 1
+	    Limits:
+	      cpu:  200m
+	    Requests:
+	      cpu:        100m
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl apply -f 05-create-pod2.yaml
+	pod/cpu-pod-2 created
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl describe pod/cpu-pod-2 -n tes-quota | egrep "Limits|Requests" -A 1
+	    Limits:
+	      cpu:  200m
+	    Requests:
+	      cpu:        109m
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl apply -f 05-create-pod3.yaml
+	pod/cpu-pod-3 created
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl describe pod/cpu-pod-3 -n tes-quota | egrep "Limits|Requests" -A 1
+	    Limits:
+	      cpu:  209m
+	    Requests:
+	      cpu:        209m
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl delete pod cpu-pod-1 cpu-pod-2 cpu-pod-3  -n tes-quota
+	pod "cpu-pod-1" deleted
+	pod "cpu-pod-2" deleted
+	pod "cpu-pod-3" deleted
+	[root@k8s ~]# 
+	[root@k8s ~]# kubectl delete limits cpu-limit -n tes-quota
+	limitrange "cpu-limit" deleted
+	[root@k8s ~]# kubectl get limits -n tes-quota
+	No resources found in tes-quota namespace.
+	[root@k8s ~]#

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cpu-pod-1
+spec:
+  containers:
+  - name: quota-container
+    image: busybox
+    imagePullPolicy: IfNotPresent
+    
+    command: ['sh', '-c', 'echo Pod is Running ; sleep 3600']
+    resources:
+      requests:
+        cpu: "100m"
+      limits:
+        cpu: "150m"
+                 
+  restartPolicy: Never
+  terminationGracePeriodSeconds: 0

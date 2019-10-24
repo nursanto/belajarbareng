@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cpu-pod-2
+  namespace: tes-quota
+spec:
+  containers:
+  - name: quota-container
+    image: busybox
+    imagePullPolicy: IfNotPresent
+    
+    command: ['sh', '-c', 'echo Pod is Running ; sleep 3600']
+    resources:
+      requests:
+        memory: "150Mi"
+      limits:
+        memory: "250Mi"
+                 
+  restartPolicy: Never
+  terminationGracePeriodSeconds: 0
