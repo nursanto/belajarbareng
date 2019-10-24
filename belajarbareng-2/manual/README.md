@@ -81,7 +81,7 @@
 	kubeadm init --apiserver-advertise-address=172.42.42.100 --pod-network-cidr=192.168.0.0/16 >> /root/kubeinit.log
 
 #### Copy Kube admin config
-	mkdir mkdir /root/.kube
+	mkdir /root/.kube
 	cp /etc/kubernetes/admin.conf /root/.kube/config
 
 #### Deploy calico network
