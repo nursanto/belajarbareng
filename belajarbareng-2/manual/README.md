@@ -90,7 +90,7 @@
 #### Generate Cluster join command
 	kubeadm token create --print-join-command > joincluster.sh
 	scp joincluster.sh root@kworker1:.
-	scp joincluster.sh root@kworker1:.
+	scp joincluster.sh root@kworker2:.
 
 ## Do on worker nodes
 #### Join worker nodes to the Kubernetes cluster
