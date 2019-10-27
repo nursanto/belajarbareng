@@ -2,11 +2,11 @@
 
 ## Node
 
-|       Hostname       |   IP Address  |
-|----------------------|---------------|
-| kmaster.example.com  | 172.42.42.100 |
-| kworker1.example.com | 172.42.42.101 |
-| kworker2.example.com | 172.42.42.102 |
+|   Role   |         FQDN         |   IP Address  |    OS    |  RAM | CPU |
+|----------|----------------------|---------------|----------|------|-----|
+|  Master  | kmaster.example.com  | 172.42.42.100 | CentOS 7 |  2G  |  2  |
+|  Worker  | kworker1.example.com | 172.42.42.101 | CentOS 7 |  1G  |  1  |
+|  Worker  | kworker2.example.com | 172.42.42.102 | CentOS 7 |  1G  |  1  |
 
 ## Do on all nodes
 
