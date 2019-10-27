@@ -10,6 +10,12 @@
 ### [Manual Instalation](./manual/)
 deploy node using vagrant and install kubernetes cluster manually
 
+|   Role   |         FQDN         |   IP Address  |    OS    |  RAM | CPU |
+|----------|----------------------|---------------|----------|------|-----|
+|  Master  | kmaster.example.com  | 172.42.42.100 | CentOS 7 |  2G  |  2  |
+|  Worker  | kworker1.example.com | 172.42.42.101 | CentOS 7 |  1G  |  1  |
+|  Worker  | kworker2.example.com | 172.42.42.102 | CentOS 7 |  1G  |  1  |
+
 ### [Script Installatin](./script)
 deploy node using vagrant and bootstrap kubernetes installaion
 
