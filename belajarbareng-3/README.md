@@ -599,112 +599,284 @@
 * failedJobsHistoryLimit
 * suspending cron jobs
 * concurrencyPloicy
-* idempotency
 
-[root@k8s ~]# kubectl get all
-NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
-service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
-[root@k8s ~]# vim 04-cronjob-1.yaml
-[root@k8s ~]# kubectl apply -f 04-cronjob-1.yaml
-cronjob.batch/helloworld-cron created
-[root@k8s ~]# kubectl get all
-NAME                                   READY   STATUS      RESTARTS   AGE
-pod/helloworld-cron-1572416220-vxrfd   0/1     Completed   0          68s
-pod/helloworld-cron-1572416280-gmz2n   0/1     Completed   0          8s
+	[root@k8s ~]# kubectl get all
+	NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+	service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
+	[root@k8s ~]# vim 04-cronjob-1.yaml
+	[root@k8s ~]# kubectl apply -f 04-cronjob-1.yaml
+	cronjob.batch/helloworld-cron created
+	[root@k8s ~]# kubectl get all
+	NAME                                   READY   STATUS      RESTARTS   AGE
+	pod/helloworld-cron-1572416220-vxrfd   0/1     Completed   0          68s
+	pod/helloworld-cron-1572416280-gmz2n   0/1     Completed   0          8s
 
-NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
-service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
+	NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+	service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
 
-NAME                                   COMPLETIONS   DURATION   AGE
-job.batch/helloworld-cron-1572416220   1/1           8s         68s
-job.batch/helloworld-cron-1572416280   1/1           8s         8s
+	NAME                                   COMPLETIONS   DURATION   AGE
+	job.batch/helloworld-cron-1572416220   1/1           8s         68s
+	job.batch/helloworld-cron-1572416280   1/1           8s         8s
 
-NAME                            SCHEDULE    SUSPEND   ACTIVE   LAST SCHEDULE   AGE
-cronjob.batch/helloworld-cron   * * * * *   False     1        13s             96s
-[root@k8s ~]# kubectl delete cronjob.batch/helloworld-cron
-cronjob.batch "helloworld-cron" deleted
-[root@k8s ~]# kubectl get all
-NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
-service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
-[root@k8s ~]#
-[root@k8s ~]# kubectl apply -f 04-cronjob-2.yaml
-cronjob.batch/helloworld-cron created
-[root@k8s ~]# kubectl get all
-NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
-service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
+	NAME                            SCHEDULE    SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+	cronjob.batch/helloworld-cron   * * * * *   False     1        13s             96s
+	[root@k8s ~]# kubectl delete cronjob.batch/helloworld-cron
+	cronjob.batch "helloworld-cron" deleted
+	[root@k8s ~]# kubectl get all
+	NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+	service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl apply -f 04-cronjob-2.yaml
+	cronjob.batch/helloworld-cron created
+	[root@k8s ~]# kubectl get all
+	NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+	service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
 
-NAME                            SCHEDULE    SUSPEND   ACTIVE   LAST SCHEDULE   AGE
-cronjob.batch/helloworld-cron   * * * * *   False     0        35s             2m4s
-[root@k8s ~]# kubectl delete cronjob.batch/helloworld-cron
-cronjob.batch "helloworld-cron" deleted
-[root@k8s ~]# kubectl get all
-NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
-service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
-[root@k8s ~]#
-[root@k8s ~]# kubectl create -f 04-cronjob-3.yaml
-cronjob.batch/helloworld-cron created
-[root@k8s ~]# kubectl get all
-NAME                                   READY   STATUS      RESTARTS   AGE
-pod/helloworld-cron-1572417060-j62f9   0/1     Completed   0          90s
-pod/helloworld-cron-1572417120-klp5x   0/1     Completed   0          29s
+	NAME                            SCHEDULE    SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+	cronjob.batch/helloworld-cron   * * * * *   False     0        35s             2m4s
+	[root@k8s ~]# kubectl delete cronjob.batch/helloworld-cron
+	cronjob.batch "helloworld-cron" deleted
+	[root@k8s ~]# kubectl get all
+	NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+	service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl create -f 04-cronjob-3.yaml
+	cronjob.batch/helloworld-cron created
+	[root@k8s ~]# kubectl get all
+	NAME                                   READY   STATUS      RESTARTS   AGE
+	pod/helloworld-cron-1572417060-j62f9   0/1     Completed   0          90s
+	pod/helloworld-cron-1572417120-klp5x   0/1     Completed   0          29s
 
-NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
-service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
+	NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+	service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
 
-NAME                                   COMPLETIONS   DURATION   AGE
-job.batch/helloworld-cron-1572417060   1/1           8s         90s
-job.batch/helloworld-cron-1572417120   1/1           7s         29s
+	NAME                                   COMPLETIONS   DURATION   AGE
+	job.batch/helloworld-cron-1572417060   1/1           8s         90s
+	job.batch/helloworld-cron-1572417120   1/1           7s         29s
 
-NAME                            SCHEDULE    SUSPEND   ACTIVE   LAST SCHEDULE   AGE
-cronjob.batch/helloworld-cron   * * * * *   False     0        37s             2m17s
-[root@k8s ~]# kubectl apply -f 04-cronjob-3-suspend.yaml
-NAME                                   READY   STATUS      RESTARTS   AGE
-pod/helloworld-cron-1572417180-dqv4q   0/1     Completed   0          2m21s
-pod/helloworld-cron-1572417240-zs9nw   0/1     Completed   0          81s
-pod/helloworld-cron-1572417300-fh946   0/1     Completed   0          20s
+	NAME                            SCHEDULE    SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+	cronjob.batch/helloworld-cron   * * * * *   False     0        37s             2m17s
+	[root@k8s ~]# kubectl apply -f 04-cronjob-3-suspend.yaml
+	NAME                                   READY   STATUS      RESTARTS   AGE
+	pod/helloworld-cron-1572417180-dqv4q   0/1     Completed   0          2m21s
+	pod/helloworld-cron-1572417240-zs9nw   0/1     Completed   0          81s
+	pod/helloworld-cron-1572417300-fh946   0/1     Completed   0          20s
 
-NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
-service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
+	NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+	service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
 
-NAME                                   COMPLETIONS   DURATION   AGE
-job.batch/helloworld-cron-1572417180   1/1           8s         2m21s
-job.batch/helloworld-cron-1572417240   1/1           8s         81s
-job.batch/helloworld-cron-1572417300   1/1           7s         20s
+	NAME                                   COMPLETIONS   DURATION   AGE
+	job.batch/helloworld-cron-1572417180   1/1           8s         2m21s
+	job.batch/helloworld-cron-1572417240   1/1           8s         81s
+	job.batch/helloworld-cron-1572417300   1/1           7s         20s
 
-NAME                            SCHEDULE    SUSPEND   ACTIVE   LAST SCHEDULE   AGE
-cronjob.batch/helloworld-cron   * * * * *   True      0        29s             5m9s
-[root@k8s ~]#
-[root@k8s ~]# kubectl patch cronjob helloworld-cron -p '{"spec":{"suspend":false}}'
-cronjob.batch/helloworld-cron patched
-[root@k8s ~]# kubectl get all
-NAME                                   READY   STATUS      RESTARTS   AGE
-pod/helloworld-cron-1572417180-dqv4q   0/1     Completed   0          4m57s
-pod/helloworld-cron-1572417240-zs9nw   0/1     Completed   0          3m57s
-pod/helloworld-cron-1572417300-fh946   0/1     Completed   0          2m56s
+	NAME                            SCHEDULE    SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+	cronjob.batch/helloworld-cron   * * * * *   True      0        29s             5m9s
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl patch cronjob helloworld-cron -p '{"spec":{"suspend":false}}'
+	cronjob.batch/helloworld-cron patched
+	[root@k8s ~]# kubectl get all
+	NAME                                   READY   STATUS      RESTARTS   AGE
+	pod/helloworld-cron-1572417180-dqv4q   0/1     Completed   0          4m57s
+	pod/helloworld-cron-1572417240-zs9nw   0/1     Completed   0          3m57s
+	pod/helloworld-cron-1572417300-fh946   0/1     Completed   0          2m56s
 
-NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
-service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
+	NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+	service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
 
-NAME                                   COMPLETIONS   DURATION   AGE
-job.batch/helloworld-cron-1572417180   1/1           8s         4m57s
-job.batch/helloworld-cron-1572417240   1/1           8s         3m57s
-job.batch/helloworld-cron-1572417300   1/1           7s         2m56s
+	NAME                                   COMPLETIONS   DURATION   AGE
+	job.batch/helloworld-cron-1572417180   1/1           8s         4m57s
+	job.batch/helloworld-cron-1572417240   1/1           8s         3m57s
+	job.batch/helloworld-cron-1572417300   1/1           7s         2m56s
 
-NAME                            SCHEDULE    SUSPEND   ACTIVE   LAST SCHEDULE   AGE
-cronjob.batch/helloworld-cron   * * * * *   False     0        3m5s            7m45s
-[root@k8s ~]# kubectl delete cronjob.batch/helloworld-cron
-cronjob.batch "helloworld-cron" deleted
-[root@k8s ~]# kubectl get all
-NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
-service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
-[root@k8s ~]#
+	NAME                            SCHEDULE    SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+	cronjob.batch/helloworld-cron   * * * * *   False     0        3m5s            7m45s
+	[root@k8s ~]# kubectl delete cronjob.batch/helloworld-cron
+	cronjob.batch "helloworld-cron" deleted
+	[root@k8s ~]# kubectl get all
+	NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+	service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3d16h
+	[root@k8s ~]#
 
 
 
 ### Scheduling
 
+	[root@k8s ~]# kubectl get all
+	NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+	service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   4d2h
+	[root@k8s ~]# kubectl get node -o wide
+	NAME                   STATUS   ROLES    AGE    VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION               CONTAINER-RUNTIME
+	kmaster.example.com    Ready    master   4d2h   v1.16.2   172.42.42.100   <none>        CentOS Linux 7 (Core)   3.10.0-957.12.2.el7.x86_64   docker://19.3.4
+	kworker1.example.com   Ready    <none>   4d2h   v1.16.2   172.42.42.101   <none>        CentOS Linux 7 (Core)   3.10.0-957.12.2.el7.x86_64   docker://19.3.4
+	kworker2.example.com   Ready    <none>   4d2h   v1.16.2   172.42.42.102   <none>        CentOS Linux 7 (Core)   3.10.0-957.12.2.el7.x86_64   docker://19.3.4
+	[root@k8s ~]# kubectl create -f 05-dp-nginx.yaml
+	deployment.apps/nginx-deploy created
+	[root@k8s ~]# kubectl get node -o wide
+	NAME                   STATUS   ROLES    AGE    VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION               CONTAINER-RUNTIME
+	kmaster.example.com    Ready    master   4d2h   v1.16.2   172.42.42.100   <none>        CentOS Linux 7 (Core)   3.10.0-957.12.2.el7.x86_64   docker://19.3.4
+	kworker1.example.com   Ready    <none>   4d2h   v1.16.2   172.42.42.101   <none>        CentOS Linux 7 (Core)   3.10.0-957.12.2.el7.x86_64   docker://19.3.4
+	kworker2.example.com   Ready    <none>   4d2h   v1.16.2   172.42.42.102   <none>        CentOS Linux 7 (Core)   3.10.0-957.12.2.el7.x86_64   docker://19.3.4
+	[root@k8s ~]# kubectl get all -o wide
+	NAME                                READY   STATUS    RESTARTS   AGE   IP       NODE     NOMINATED NODE   READINESS GATES
+	pod/nginx-deploy-6dc65bcf6f-477ml   0/1     Pending   0          16s   <none>   <none>   <none>           <none>
+	pod/nginx-deploy-6dc65bcf6f-hssrk   0/1     Pending   0          16s   <none>   <none>   <none>           <none>
+
+	NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE    SELECTOR
+	service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   4d2h   <none>
+
+	NAME                           READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR
+	deployment.apps/nginx-deploy   0/2     2            0           16s   nginx        nginx    run=nginx
+
+	NAME                                      DESIRED   CURRENT   READY   AGE   CONTAINERS   IMAGES   SELECTOR
+	replicaset.apps/nginx-deploy-6dc65bcf6f   2         2         0       16s   nginx        nginx    pod-template-hash=6dc65bcf6f,run=nginx
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl label kworker2.example.com disk=ssd
+	error: resource(s) were provided, but no name, label selector, or --all flag specified
+	[root@k8s ~]# kubectl label node  kworker2.example.com disk=ssd
+	node/kworker2.example.com labeled
+	[root@k8s ~]# kubectl get node -o wide -L disk
+	NAME                   STATUS   ROLES    AGE    VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION               CONTAINER-RUNTIME   DISK
+	kmaster.example.com    Ready    master   4d2h   v1.16.2   172.42.42.100   <none>        CentOS Linux 7 (Core)   3.10.0-957.12.2.el7.x86_64   docker://19.3.4
+	kworker1.example.com   Ready    <none>   4d2h   v1.16.2   172.42.42.101   <none>        CentOS Linux 7 (Core)   3.10.0-957.12.2.el7.x86_64   docker://19.3.4
+	kworker2.example.com   Ready    <none>   4d2h   v1.16.2   172.42.42.102   <none>        CentOS Linux 7 (Core)   3.10.0-957.12.2.el7.x86_64   docker://19.3.4     ssd
+	[root@k8s ~]# kubectl get node  -L disk
+	NAME                   STATUS   ROLES    AGE    VERSION   DISK
+	kmaster.example.com    Ready    master   4d2h   v1.16.2
+	kworker1.example.com   Ready    <none>   4d2h   v1.16.2
+	kworker2.example.com   Ready    <none>   4d2h   v1.16.2   ssd
+	[root@k8s ~]# kubectl get all -o wide
+	NAME                                READY   STATUS    RESTARTS   AGE   IP               NODE                   NOMINATED NODE   READINESS GATES
+	pod/nginx-deploy-6dc65bcf6f-477ml   1/1     Running   0          81s   192.168.136.93   kworker2.example.com   <none>           <none>
+	pod/nginx-deploy-6dc65bcf6f-hssrk   1/1     Running   0          81s   192.168.136.92   kworker2.example.com   <none>           <none>
+
+	NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE    SELECTOR
+	service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   4d2h   <none>
+
+	NAME                           READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR
+	deployment.apps/nginx-deploy   2/2     2            2           81s   nginx        nginx    run=nginx
+
+	NAME                                      DESIRED   CURRENT   READY   AGE   CONTAINERS   IMAGES   SELECTOR
+	replicaset.apps/nginx-deploy-6dc65bcf6f   2         2         2       81s   nginx        nginx    pod-template-hash=6dc65bcf6f,run=nginx
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl delete deployment.apps/nginx-deploy
+	deployment.apps "nginx-deploy" deleted
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl label node  kworker2.example.com disk-
+	node/kworker2.example.com labeled
+	[root@k8s ~]# kubectl get node  -L disk
+	NAME                   STATUS   ROLES    AGE    VERSION   DISK
+	kmaster.example.com    Ready    master   4d2h   v1.16.2
+	kworker1.example.com   Ready    <none>   4d2h   v1.16.2
+	kworker2.example.com   Ready    <none>   4d2h   v1.16.2
+	[root@k8s ~]#
 
 
 ### Volumes and Data
 
-	#
+	[root@k8s ~]# yum -y install nfs-utils
+	Loaded plugins: fastestmirror
+	Loading mirror speeds from cached hostfile
+	 * base: kartolo.sby.datautama.net.id
+
+		<output_omitted>
+
+	Complete!
+	[root@k8s ~]#
+	[root@k8s ~]# mkdir -p /nfs/kubernetes
+	[root@k8s ~]#
+	[root@k8s ~]# mkdir -p /srv/nfs/kubedata
+	[root@k8s ~]# chmod -R 777 /srv/nfs/
+	[root@k8s ~]#
+	[root@k8s ~]# cat /etc/exports
+	/srv/nfs/kubedata       *(rw,sync,no_subtree_check,insecure)
+	[root@k8s ~]#
+
+	[root@k8s ~]# systemctl start rpcbind nfs-server
+	[root@k8s ~]# systemctl enable rpcbind nfs-server
+	Created symlink from /etc/systemd/system/multi-user.target.wants/nfs-server.service to /usr/lib/systemd/system/nfs-server.service.
+	[root@k8s ~]#
+	[root@k8s ~]# exportfs -v
+	/srv/nfs/kubedata
+	                <world>(sync,wdelay,hide,no_subtree_check,sec=sys,rw,insecure,root_squash,no_all_squash)
+	[root@k8s ~]# showmount -e
+	Export list for k8s.lab:
+	/srv/nfs/kubedata *
+	[root@k8s ~]#
+	[root@k8s ~]# ssh kworker1
+	root@kworker1's password:
+	Last login: Wed Oct 30 16:39:48 2019 from 172.42.42.1
+	[root@kworker1 ~]# showmount -e 172.42.42.1
+	Export list for 172.42.42.1:
+	/srv/nfs/kubedata *
+	[root@kworker1 ~]# mount -t nfs 172.42.42.1:/srv/nfs/kubedata /mnt
+	[root@kworker1 ~]# mount | grep kubedata
+	172.42.42.1:/srv/nfs/kubedata on /mnt type nfs4 (rw,relatime,vers=4.1,rsize=1048576,wsize=1048576,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,clientaddr=172.42.42.101,local_lock=none,addr=172.42.42.1)
+	[root@kworker1 ~]#
+	[root@kworker1 ~]# umount /mnt/
+	[root@kworker1 ~]# exit
+	logout
+	Connection to kworker1 closed.
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl apply -f 06-pv-nfs.yaml
+	persistentvolume/pv-nfs-pv1 created
+	[root@k8s ~]# kubectl get pv
+	NAME         CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   REASON   AGE
+	pv-nfs-pv1   1Gi        RWX            Retain           Available           my-nfs                  6s
+	[root@k8s ~]# kubectl apply -f 06-pvc-nfs.yaml
+	persistentvolumeclaim/pvc-nfs-pv1 created
+	[root@k8s ~]# kubectl get pv,pvc
+	NAME                          CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                 STORAGECLASS   REASON   AGE
+	persistentvolume/pv-nfs-pv1   1Gi        RWX            Retain           Bound    default/pvc-nfs-pv1   my-nfs                  28s
+
+	NAME                                STATUS   VOLUME       CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+	persistentvolumeclaim/pvc-nfs-pv1   Bound    pv-nfs-pv1   1Gi        RWX            my-nfs         9s
+	[root@k8s ~]# kubectl create -f 06-nfs-nginx.yaml
+	deployment.apps/nginx-deploy created
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl get all
+	NAME                                READY   STATUS    RESTARTS   AGE
+	pod/nginx-deploy-6fdd5b84cc-gdqg5   1/1     Running   0          18s
+
+	NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+	service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   4d2h
+
+	NAME                           READY   UP-TO-DATE   AVAILABLE   AGE
+	deployment.apps/nginx-deploy   1/1     1            1           18s
+
+	NAME                                      DESIRED   CURRENT   READY   AGE
+	replicaset.apps/nginx-deploy-6fdd5b84cc   1         1         1       18s
+	[root@k8s ~]# kubectl expose deployment.apps/nginx-deploy --port 80 --type NodePort
+	service/nginx-deploy exposed
+	[root@k8s ~]#
+	[root@k8s ~]# kubectl get svc
+	NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+	kubernetes     ClusterIP   10.96.0.1        <none>        443/TCP        4d2h
+	nginx-deploy   NodePort    10.102.211.124   <none>        80:30036/TCP   12s
+	[root@k8s ~]#
+	[root@k8s ~]# curl kworker1:30036
+	<html>
+	<head><title>403 Forbidden</title></head>
+	<body>
+	<center><h1>403 Forbidden</h1></center>
+	<hr><center>nginx/1.17.5</center>
+	</body>
+	</html>
+	[root@k8s ~]# curl kworker2:30036
+	<html>
+	<head><title>403 Forbidden</title></head>
+	<body>
+	<center><h1>403 Forbidden</h1></center>
+	<hr><center>nginx/1.17.5</center>
+	</body>
+	</html>
+	[root@k8s ~]#
+	[root@k8s ~]# echo "Hello from nfs kubernetes.." > /srv/nfs/kubedata/index.html                                                                                      [root@k8s ~]#
+	[root@k8s ~]#
+	[root@k8s ~]# curl kworker1:30036
+	Hello from nfs kubernetes..
+	[root@k8s ~]# curl kworker2:30036
+	Hello from nfs kubernetes..
+	[root@k8s ~]#
+
+
