@@ -1,4 +1,4 @@
-## 24-10-2019
+## belajarbareng-2 / 24-10-2019 
 * where ip pool for service kubernetes store
 	## ip pool for pod
 	[root@k8s ~]# k get ippool -A
