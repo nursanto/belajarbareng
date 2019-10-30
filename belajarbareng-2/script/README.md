@@ -31,8 +31,8 @@
 
 		<output_omitted>
 
-	    kworker2: Running: /tmp/vagrant-shell20191024-14445-auhx8t.sh
-	    kworker2: [TASK 1] Join node to Kubernetes Cluster
+    kworker2: Running: /tmp/vagrant-shell20191024-14445-auhx8t.sh
+    kworker2: [TASK 1] Join node to Kubernetes Cluster
 	[root@k8s script]# 
 	[root@k8s script]#
 	[root@k8s script]# ssh vagrant@kmaster     ### password: vagrant
