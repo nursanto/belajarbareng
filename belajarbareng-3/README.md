@@ -582,7 +582,7 @@
 	  Volumes:        <none>
 	Events:
 	  Type     Reason            Age                            From            Message
-	  ----     ------            ----                           ----            -------
+
 	  Normal   SuccessfulCreate  <invalid>                      job-controller  Created pod: helloworld-nwfv4
 	  Normal   SuccessfulDelete  <invalid>                      job-controller  Deleted pod: helloworld-nwfv4
 	  Warning  DeadlineExceeded  <invalid> (x2 over <invalid>)  job-controller  Job was active longer than specified deadline
