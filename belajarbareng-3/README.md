@@ -429,13 +429,8 @@
 
 
 ### Jobs and Cron Jobs
-#### Jobs
-* Default Run
-* Killing Pod Restarts Pod
-* completions
-* parallelism
-* backoffLimit
-* activeDeatlineSeconds
+
+####Jobs
 
 	[root@k8s ~]# kubectl apply -f 03-job-1.yaml
 	job.batch/helloworld created
@@ -594,11 +589,6 @@
 	[root@k8s ~]#
 
 #### Cron Jobs
-* Default Run
-* deleting cronjobs
-* failedJobsHistoryLimit
-* suspending cron jobs
-* concurrencyPloicy
 
 	[root@k8s ~]# kubectl get all
 	NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
