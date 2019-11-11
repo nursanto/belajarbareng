@@ -10,13 +10,13 @@ spec:
       - backend:
           serviceName: nginx-deploy-main
           servicePort: 80
-  - host: blue.nginx.example.com
+  - host: blue.nginx.example.lab
     http:
       paths:
       - backend:
           serviceName: nginx-deploy-blue
           servicePort: 80
-  - host: green.nginx.example.com
+  - host: green.nginx.example.lab
     http:
       paths:
       - backend:
