@@ -7,7 +7,7 @@
 
 
 ### APIs and Access
-
+	# https://metallb.universe.tf/
 	[root@k8s ~]# kubectl cluster-info
 	Kubernetes master is running at https://172.42.42.100:6443
 	KubeDNS is running at https://172.42.42.100:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
@@ -193,7 +193,59 @@
 
 
 ### Nginx Ingress
+	# https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/index.md#bare-metal
+	# https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/baremetal.md
 
+	[root@k8s ~]# mkdir nginx-ingress
+	[root@k8s ~]#
+	[root@k8s nginx-ingress]#
+	[root@k8s nginx-ingress]# wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+
+			<output_omitted>
+
+	[root@k8s nginx-ingress]# wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/baremetal/service-nodeport.yaml
+
+			<output_omitted>
+
+	[root@k8s nginx-ingress]#
+	[root@k8s nginx-ingress]# ls
+	mandatory.yaml  service-nodeport.yaml
+	[root@k8s nginx-ingress]#
+	[root@k8s nginx-ingress]# kubectl create -f mandatory.yaml
+	namespace/ingress-nginx created
+	configmap/nginx-configuration created
+	configmap/tcp-services created
+	configmap/udp-services created
+	serviceaccount/nginx-ingress-serviceaccount created
+	clusterrole.rbac.authorization.k8s.io/nginx-ingress-clusterrole created
+	role.rbac.authorization.k8s.io/nginx-ingress-role created
+	rolebinding.rbac.authorization.k8s.io/nginx-ingress-role-nisa-binding created
+	clusterrolebinding.rbac.authorization.k8s.io/nginx-ingress-clusterrole-nisa-binding created
+	deployment.apps/nginx-ingress-controller created
+	[root@k8s nginx-ingress]# kubectl create -f service-nodeport.yaml
+	service/ingress-nginx created
+	[root@k8s nginx-ingress]#
+	[root@k8s nginx-ingress]# kubectl get namespaces
+	NAME              STATUS   AGE
+	default           Active   26h
+	ingress-nginx     Active   36s
+	kube-node-lease   Active   26h
+	kube-public       Active   26h
+	kube-system       Active   26h
+	metallb-system    Active   21h
+	[root@k8s nginx-ingress]# kubectl -n ingress-nginx get all
+	NAME                                            READY   STATUS    RESTARTS   AGE
+	pod/nginx-ingress-controller-568867bf56-c5mjm   1/1     Running   0          45s
+
+	NAME                    TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
+	service/ingress-nginx   NodePort   10.104.100.86   <none>        80:31552/TCP,443:30369/TCP   34s
+
+	NAME                                       READY   UP-TO-DATE   AVAILABLE   AGE
+	deployment.apps/nginx-ingress-controller   1/1     1            1           45s
+
+	NAME                                                  DESIRED   CURRENT   READY   AGE
+	replicaset.apps/nginx-ingress-controller-568867bf56   1         1         1       45s
+	[root@k8s nginx-ingress]# cd
 	[root@k8s ~]# yum -y install haproxy
 	Loaded plugins: fastestmirror
 
@@ -204,52 +256,26 @@
 	[root@k8s ~]#
 	[root@k8s ~]# vim /etc/haproxy/haproxy.cfg
 	[root@k8s ~]#
+	[root@k8s tes-2]# tail /etc/haproxy/haproxy.cfg
+	#---------------------------------------------------------------------
+	frontend http_front
+	  bind *:80
+	  default_backend http_back
+
+	backend http_back
+	  balance roundrobin
+	  server kworker1 172.42.42.101:31552
+	  server kworker2 172.42.42.102:31552
+
+	[root@k8s tes-2]#
+
 	[root@k8s ~]# systemctl restart haproxy
 	[root@k8s ~]# systemctl enable haproxy
 	Created symlink from /etc/systemd/system/multi-user.target.wants/haproxy.service to /usr/lib/systemd/system/haproxy.service.
 	[root@k8s ~]#
-	[root@k8s ~]# git clone https://github.com/nginxinc/kubernetes-ingress.git
-
-		<output_omitted>
-
-
-	[root@k8s ~]#
-	[root@k8s ~]# cd kubernetes-ingress/deployments/
-	[root@k8s deployments]#
-	[root@k8s deployments]# kubectl apply -f common/ns-and-sa.yaml
-	namespace/nginx-ingress created
-	serviceaccount/nginx-ingress created
-	[root@k8s deployments]# kubectl apply -f common/default-server-secret.yaml
-	secret/default-server-secret created
-	[root@k8s deployments]# kubectl apply -f common/nginx-config.yaml
-	configmap/nginx-config created
-	[root@k8s deployments]# kubectl apply -f rbac/rbac.yaml
-	clusterrole.rbac.authorization.k8s.io/nginx-ingress created
-	clusterrolebinding.rbac.authorization.k8s.io/nginx-ingress created
-	[root@k8s deployments]# kubectl apply -f daemon-set/nginx-ingress.yaml
-	daemonset.apps/nginx-ingress created
-	[root@k8s deployments]#
-	[root@k8s deployments]# kubectl get namespaces
-	NAME              STATUS   AGE
-	default           Active   5h6m
-	kube-node-lease   Active   5h6m
-	kube-public       Active   5h6m
-	kube-system       Active   5h6m
-	metallb-system    Active   31m
-	nginx-ingress     Active   2m28s
-	[root@k8s deployments]# kubectl get all -n nginx-ingress
-	NAME                      READY   STATUS    RESTARTS   AGE
-	pod/nginx-ingress-lsbdf   1/1     Running   0          6m11s
-	pod/nginx-ingress-ngtcb   1/1     Running   0          6m11s
-
-	NAME                           DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
-	daemonset.apps/nginx-ingress   2         2         2       2            2           <none>          6m11s
-	[root@k8s deployments]#
-	[root@k8s deployments]# cd
 	[root@k8s ~]# git clone https://github.com/nursanto/belajarbareng.git
 
 		<output_omitted>
-
 
 	[root@k8s ~]#
 	[root@k8s ~]# cd belajarbareng/belajarbareng-4/materials/
@@ -401,6 +427,35 @@
 	ingress-resource-2   nginx.example.lab,blue.nginx.example.lab,green.nginx.example.lab             80      5m4s
 	[root@k8s materials]# kubectl delete ingresses ingress-resource-2
 	ingress.extensions "ingress-resource-2" deleted
+	[root@k8s materials]#
+
+	[root@k8s materials]# kubectl create -f ingress-resource-3.yaml
+	ingress.extensions/ingress-resource-3 created
+	[root@k8s materials]# kubectl describe ingresses. ingress-resource-3
+	Name:             ingress-resource-3
+	Namespace:        default
+	Address:          10.104.100.86
+	Default backend:  default-http-backend:80 (<none>)
+	Rules:
+	  Host               Path  Backends
+	  ----               ----  --------
+	  nginx.example.lab
+	                     /        nginx-deploy-main:80 (192.168.33.199:80)
+	                     /blue    nginx-deploy-blue:80 (192.168.136.72:80)
+	                     /green   nginx-deploy-green:80 (192.168.136.71:80)
+	Annotations:
+	  kubernetes.io/ingress.class:                 nginx
+	  nginx.ingress.kubernetes.io/rewrite-target:  /
+	Events:
+	  Type    Reason  Age        From                      Message
+	  ----    ------  ----       ----                      -------
+	  Normal  CREATE  <invalid>  nginx-ingress-controller  Ingress default/ingress-resource-3
+	  Normal  UPDATE  <invalid>  nginx-ingress-controller  Ingress default/ingress-resource-3
+	[root@k8s materials]#
+	[root@k8s materials]# curl nginx.example.lab/blue
+	<h1>I am <font color=blue>BLUE</font></h1>
+	[root@k8s materials]# curl nginx.example.lab/green
+	<h1>I am <font color=green>GREEN</font></h1>
 	[root@k8s materials]#
 
 
