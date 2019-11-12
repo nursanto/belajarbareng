@@ -6,8 +6,9 @@
 
 
 
-### APIs and Access
-	# https://metallb.universe.tf/
+### Services of type LoadBalancer
+[https://metallb.universe.tf/](https://metallb.universe.tf/])
+
 	[root@k8s ~]# kubectl cluster-info
 	Kubernetes master is running at https://172.42.42.100:6443
 	KubeDNS is running at https://172.42.42.100:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
@@ -193,8 +194,8 @@
 
 
 ### Nginx Ingress
-	# https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/index.md#bare-metal
-	# https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/baremetal.md
+[https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/index.md#bare-metal](https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/index.md#bare-metal)
+[https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/baremetal.md](https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/baremetal.md)
 
 	[root@k8s ~]# mkdir nginx-ingress
 	[root@k8s ~]#
