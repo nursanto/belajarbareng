@@ -1,7 +1,7 @@
 # belajarbareng
 
 ## Table of Contents
-* [belajarbareng-1](./belajarbareng-1_docker-fundamental/)
+* [**belajarbareng-1**](./belajarbareng-1_docker-fundamental/)
 	* Docker Overview
 	* Building Container Images
 	* Storing and Distributing Images
