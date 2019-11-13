@@ -459,9 +459,17 @@
 	<h1>I am <font color=green>GREEN</font></h1>
 	[root@k8s materials]#
 
+### Install Cockpit
+	[root@k8s]# 
+	[root@k8s]# yum install -y epel-release
+	[root@k8s]# yum install -y cockpit-docker cockpit-kubernetes
+	[root@k8s]# yum install -y cockpit-storaged
+	[root@k8s]# systemctl enable cockpit.socket
+	[root@k8s]# systemctl restart cockpit.socket
+	[root@k8s]# 
 
 
-
+### Install Kubernetes Dashboard
 
 
 
