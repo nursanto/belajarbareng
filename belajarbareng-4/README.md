@@ -464,7 +464,7 @@
 ### Install Cockpit
 	[root@k8s]# 
 	[root@k8s]# yum install -y epel-release
-	[root@k8s]# yum install -y cockpit-docker cockpit-kubernetes
+	[root@k8s]# yum install -y cockpit cockpit-docker cockpit-kubernetes
 	[root@k8s]# yum install -y cockpit-storaged
 	[root@k8s]# systemctl enable cockpit.socket
 	[root@k8s]# systemctl restart cockpit.socket
