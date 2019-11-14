@@ -527,60 +527,60 @@
 ### Helm Tiller
 [https://helm.sh/docs/intro/install/](https://helm.sh/docs/intro/install/)
 
-[root@k8s ~]# wget https://get.helm.sh/helm-v2.16.0-linux-amd64.tar.gz
+	[root@k8s ~]# wget https://get.helm.sh/helm-v2.16.0-linux-amd64.tar.gz
 
-		<output_omitted>
+			<output_omitted>
 
-[root@k8s ~]#
-[root@k8s ~]# tar xzf helm-v2.16.0-linux-amd64.tar.gz
-[root@k8s ~]# cd linux-amd64/
-[root@k8s linux-amd64]# cp helm /usr/local/bin/
-[root@k8s linux-amd64]# which helm
-/usr/local/bin/helm
-[root@k8s linux-amd64]# helm version --short
-Client: v2.16.0+ge13bc94
-Error: could not find tiller
-[root@k8s linux-amd64]#
-[root@k8s linux-amd64]# kubectl -n kube-system create serviceaccount tiller
-serviceaccount/tiller created
-[root@k8s linux-amd64]# kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
-clusterrolebinding.rbac.authorization.k8s.io/tiller created
-[root@k8s linux-amd64]# helm init --service-account tiller
-Creating /root/.helm
-Creating /root/.helm/repository
-Creating /root/.helm/repository/cache
-Creating /root/.helm/repository/local
-Creating /root/.helm/plugins
-Creating /root/.helm/starters
-Creating /root/.helm/cache/archive
-Creating /root/.helm/repository/repositories.yaml
-Adding stable repo with URL: https://kubernetes-charts.storage.googleapis.com
-Adding local repo with URL: http://127.0.0.1:8879/charts
-$HELM_HOME has been configured at /root/.helm.
+	[root@k8s ~]#
+	[root@k8s ~]# tar xzf helm-v2.16.0-linux-amd64.tar.gz
+	[root@k8s ~]# cd linux-amd64/
+	[root@k8s linux-amd64]# cp helm /usr/local/bin/
+	[root@k8s linux-amd64]# which helm
+	/usr/local/bin/helm
+	[root@k8s linux-amd64]# helm version --short
+	Client: v2.16.0+ge13bc94
+	Error: could not find tiller
+	[root@k8s linux-amd64]#
+	[root@k8s linux-amd64]# kubectl -n kube-system create serviceaccount tiller
+	serviceaccount/tiller created
+	[root@k8s linux-amd64]# kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+	clusterrolebinding.rbac.authorization.k8s.io/tiller created
+	[root@k8s linux-amd64]# helm init --service-account tiller
+	Creating /root/.helm
+	Creating /root/.helm/repository
+	Creating /root/.helm/repository/cache
+	Creating /root/.helm/repository/local
+	Creating /root/.helm/plugins
+	Creating /root/.helm/starters
+	Creating /root/.helm/cache/archive
+	Creating /root/.helm/repository/repositories.yaml
+	Adding stable repo with URL: https://kubernetes-charts.storage.googleapis.com
+	Adding local repo with URL: http://127.0.0.1:8879/charts
+	$HELM_HOME has been configured at /root/.helm.
 
-Tiller (the Helm server-side component) has been installed into your Kubernetes Cluster.
+	Tiller (the Helm server-side component) has been installed into your Kubernetes Cluster.
 
-Please note: by default, Tiller is deployed with an insecure 'allow unauthenticated users' policy.
-To prevent this, run `helm init` with the --tiller-tls-verify flag.
-For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation
-[root@k8s linux-amd64]#
-[root@k8s linux-amd64]# helm version --short
-Client: v2.16.0+ge13bc94
-Server: v2.16.0+ge13bc94
-[root@k8s linux-amd64]#
-[root@k8s linux-amd64]# kubectl get all -A -l app=helm
-NAMESPACE     NAME                                 READY   STATUS    RESTARTS   AGE
-kube-system   pod/tiller-deploy-68cff9d9cb-rjjvf   1/1     Running   0          109s
+	Please note: by default, Tiller is deployed with an insecure 'allow unauthenticated users' policy.
+	To prevent this, run `helm init` with the --tiller-tls-verify flag.
+	For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation
+	[root@k8s linux-amd64]#
+	[root@k8s linux-amd64]# helm version --short
+	Client: v2.16.0+ge13bc94
+	Server: v2.16.0+ge13bc94
+	[root@k8s linux-amd64]#
+	[root@k8s linux-amd64]# kubectl get all -A -l app=helm
+	NAMESPACE     NAME                                 READY   STATUS    RESTARTS   AGE
+	kube-system   pod/tiller-deploy-68cff9d9cb-rjjvf   1/1     Running   0          109s
 
-NAMESPACE     NAME                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)     AGE
-kube-system   service/tiller-deploy   ClusterIP   10.104.242.108   <none>        44134/TCP   109s
+	NAMESPACE     NAME                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)     AGE
+	kube-system   service/tiller-deploy   ClusterIP   10.104.242.108   <none>        44134/TCP   109s
 
-NAMESPACE     NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
-kube-system   deployment.apps/tiller-deploy   1/1     1            1           109s
+	NAMESPACE     NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
+	kube-system   deployment.apps/tiller-deploy   1/1     1            1           109s
 
-NAMESPACE     NAME                                       DESIRED   CURRENT   READY   AGE
-kube-system   replicaset.apps/tiller-deploy-68cff9d9cb   1         1         1       109s
-[root@k8s linux-amd64]#
+	NAMESPACE     NAME                                       DESIRED   CURRENT   READY   AGE
+	kube-system   replicaset.apps/tiller-deploy-68cff9d9cb   1         1         1       109s
+	[root@k8s linux-amd64]#
 
 
 
