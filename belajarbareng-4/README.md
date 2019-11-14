@@ -3,7 +3,9 @@
 ## Table of Contents
 * [Services of type LoadBalancer](#Services-of-type-LoadBalancer)
 * [Nginx Ingress](#Nginx-Ingress)
-
+* [Install Cockpit](#Install-Cockpit)
+* [Dynamic NFS Provisioner](#Dynamic-NFS-Provisioner)
+* [Helm Tiller](#Helm-Tiller)
 
 
 ### Services of type LoadBalancer
@@ -469,7 +471,116 @@
 	[root@k8s]# 
 
 
-### Install Kubernetes Dashboard
+### Dynamic NFS Provisioner
+	[root@k8s ~]# cd belajarbareng/belajarbareng-4/nfs-provisioner/
+	[root@k8s nfs-provisioner]# ls -1
+	class.yaml
+	default-sc.yaml
+	deployment.yaml
+	pvc-nfs.yaml
+	rbac.yaml
+	[root@k8s nfs-provisioner]#
+	[root@k8s nfs-provisioner]# kubectl create -f default-sc.yaml
+	storageclass.storage.k8s.io/managed-nfs-storage created
+	[root@k8s nfs-provisioner]# kubectl create -f rbac.yaml
+	serviceaccount/nfs-client-provisioner created
+	clusterrole.rbac.authorization.k8s.io/nfs-client-provisioner-runner created
+	clusterrolebinding.rbac.authorization.k8s.io/run-nfs-client-provisioner created
+	role.rbac.authorization.k8s.io/leader-locking-nfs-client-provisioner created
+	rolebinding.rbac.authorization.k8s.io/leader-locking-nfs-client-provisioner created
+	[root@k8s nfs-provisioner]# kubectl create -f deployment.yaml
+	deployment.apps/nfs-client-provisioner created
+	[root@k8s nfs-provisioner]#
+	[root@k8s nfs-provisioner]# kubectl get all
+	NAME                                         READY   STATUS    RESTARTS   AGE
+	pod/nfs-client-provisioner-7cb848b79-v6chq   1/1     Running   0          110s
+
+	NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+	service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3h25m
+
+	NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE
+	deployment.apps/nfs-client-provisioner   1/1     1            1           111s
+
+	NAME                                               DESIRED   CURRENT   READY   AGE
+	replicaset.apps/nfs-client-provisioner-7cb848b79   1         1         1       111s
+	[root@k8s nfs-provisioner]#
+	[root@k8s nfs-provisioner]# kubectl get pv,pvc
+	No resources found in default namespace.
+	[root@k8s nfs-provisioner]#
+	[root@k8s nfs-provisioner]# kubectl create -f  pvc-nfs.yaml
+	persistentvolumeclaim/pvc-nfs-pv1 created
+	[root@k8s nfs-provisioner]#
+	[root@k8s nfs-provisioner]# kubectl get pv,pvc
+	NAME                                                        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                 STORAGECLASS          REASON   AGE
+	persistentvolume/pvc-74cf5be3-ab1c-4f3c-b141-5cca653fc306   500Mi      RWX            Delete           Bound    default/pvc-nfs-pv1   managed-nfs-storage            4s
+
+	NAME                                STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS          AGE
+	persistentvolumeclaim/pvc-nfs-pv1   Bound    pvc-74cf5be3-ab1c-4f3c-b141-5cca653fc306   500Mi      RWX            managed-nfs-storage   4s
+	[root@k8s nfs-provisioner]#
+	[root@k8s nfs-provisioner]# kubectl delete persistentvolumeclaim/pvc-nfs-pv1
+	persistentvolumeclaim "pvc-nfs-pv1" deleted
+	[root@k8s nfs-provisioner]# kubectl get pv,pvc
+	No resources found in default namespace.
+	[root@k8s nfs-provisioner]#
+
+
+### Helm Tiller
+[https://helm.sh/docs/intro/install/](https://helm.sh/docs/intro/install/)
+
+[root@k8s ~]# wget https://get.helm.sh/helm-v2.16.0-linux-amd64.tar.gz
+
+		<output_omitted>
+
+[root@k8s ~]#
+[root@k8s ~]# tar xzf helm-v2.16.0-linux-amd64.tar.gz
+[root@k8s ~]# cd linux-amd64/
+[root@k8s linux-amd64]# cp helm /usr/local/bin/
+[root@k8s linux-amd64]# which helm
+/usr/local/bin/helm
+[root@k8s linux-amd64]# helm version --short
+Client: v2.16.0+ge13bc94
+Error: could not find tiller
+[root@k8s linux-amd64]#
+[root@k8s linux-amd64]# kubectl -n kube-system create serviceaccount tiller
+serviceaccount/tiller created
+[root@k8s linux-amd64]# kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+clusterrolebinding.rbac.authorization.k8s.io/tiller created
+[root@k8s linux-amd64]# helm init --service-account tiller
+Creating /root/.helm
+Creating /root/.helm/repository
+Creating /root/.helm/repository/cache
+Creating /root/.helm/repository/local
+Creating /root/.helm/plugins
+Creating /root/.helm/starters
+Creating /root/.helm/cache/archive
+Creating /root/.helm/repository/repositories.yaml
+Adding stable repo with URL: https://kubernetes-charts.storage.googleapis.com
+Adding local repo with URL: http://127.0.0.1:8879/charts
+$HELM_HOME has been configured at /root/.helm.
+
+Tiller (the Helm server-side component) has been installed into your Kubernetes Cluster.
+
+Please note: by default, Tiller is deployed with an insecure 'allow unauthenticated users' policy.
+To prevent this, run `helm init` with the --tiller-tls-verify flag.
+For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation
+[root@k8s linux-amd64]#
+[root@k8s linux-amd64]# helm version --short
+Client: v2.16.0+ge13bc94
+Server: v2.16.0+ge13bc94
+[root@k8s linux-amd64]#
+[root@k8s linux-amd64]# kubectl get all -A -l app=helm
+NAMESPACE     NAME                                 READY   STATUS    RESTARTS   AGE
+kube-system   pod/tiller-deploy-68cff9d9cb-rjjvf   1/1     Running   0          109s
+
+NAMESPACE     NAME                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)     AGE
+kube-system   service/tiller-deploy   ClusterIP   10.104.242.108   <none>        44134/TCP   109s
+
+NAMESPACE     NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
+kube-system   deployment.apps/tiller-deploy   1/1     1            1           109s
+
+NAMESPACE     NAME                                       DESIRED   CURRENT   READY   AGE
+kube-system   replicaset.apps/tiller-deploy-68cff9d9cb   1         1         1       109s
+[root@k8s linux-amd64]#
 
 
 
