@@ -23,3 +23,6 @@
 * [**belajarbareng-4**](./belajarbareng-4/)
 	* Services of type LoadBalancer
 	* Nginx Ingress
+	* Install Cockpit
+	* Dynamic NFS Provisioner
+	* Helm Tiller

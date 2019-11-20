@@ -9,7 +9,7 @@
 
 
 ### Services of type LoadBalancer
-[https://metallb.universe.tf/](https://metallb.universe.tf/])
+[https://metallb.universe.tf/](https://metallb.universe.tf/)
 
 	[root@k8s ~]# kubectl cluster-info
 	Kubernetes master is running at https://172.42.42.100:6443

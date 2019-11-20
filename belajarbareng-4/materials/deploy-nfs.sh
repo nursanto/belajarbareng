@@ -1,4 +1,4 @@
-yum -y -q install nfs-utils > /dev/null 2&>1
+yum -y -q install nfs-utils > /dev/null 2>&1
 mkdir -p /srv/nfs/kubedata
 chmod -R 777 /srv/nfs/
 cat >>/etc/exports<<EOF
