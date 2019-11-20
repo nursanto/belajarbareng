@@ -26,3 +26,9 @@
 	* Install Cockpit
 	* Dynamic NFS Provisioner
 	* Helm Tiller
+* [**belajarbareng-5**](./belajarbareng-5/)
+	* Helm Chart
+	* Kubernetes Dashboard
+	* Prometheus
+	* Grafana
+	* Rancher
