@@ -27,7 +27,7 @@
 	* Dynamic NFS Provisioner
 	* Helm Tiller
 * [**belajarbareng-5**](./belajarbareng-5/)
-	* [Helm Chart](./belajarbareng-5/Helm-Chart)
+	* [Helm Chart](./belajarbareng-5/#Helm-Chart)
 	* Kubernetes Dashboard
 	* Prometheus
 	* Grafana
