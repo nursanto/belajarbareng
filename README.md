@@ -2,33 +2,33 @@
 
 ## Table of Contents
 * [**belajarbareng-1**](./belajarbareng-1_docker-fundamental/)
-	* Docker Overview
-	* Building Container Images
-	* Storing and Distributing Images
-	* Managing Containers
-	* Docker Compose
+	* [Docker Overview](./belajarbareng-1_docker-fundamental/#Docker-Overview)
+	* [Building Container Images](./belajarbareng-1_docker-fundamental/#Building-Container-Images)
+	* [Storing and Distributing Images](./belajarbareng-1_docker-fundamental/#Storing-and-Distributing-Images)
+	* [Managing Containers](./belajarbareng-1_docker-fundamental/#Managing-Containers)
+	* [Docker Compose](./belajarbareng-1_docker-fundamental/#Docker-Compose)
 * [**belajarbareng-2**](./belajarbareng-2/)
-	* Manual Instalation
-	* Script Installatin
-	* Cluster Check
-	* Deploy Simple Application
-	* Resource Management
+	* [Manual Instalation](./belajarbareng-2/#Manual-Instalation)
+	* [Script Installatin](./belajarbareng-2/#Script-Installatin)
+	* [Cluster Check](./belajarbareng-2/#Cluster-Check)
+	* [Deploy Simple Application](./belajarbareng-2/#Deploy-Simple-Application)
+	* [Resource Management](./belajarbareng-2/#Resource-Management)
 * [**belajarbareng-3**](./belajarbareng-3/)
-	* APIs and Access
-	* API Objects
-	* Managing State with Deployments
-	* Jobs and Cron Jobs
-	* Scheduling
-	* Volumes and Data
+	* [APIs and Access](./belajarbareng-3/#APIs-and-Access)
+	* [API Objects](./belajarbareng-3/#API-Objects)
+	* [Managing State with Deployments](./belajarbareng-3/#Managing-State-with-Deployments)
+	* [Jobs and Cron Jobs](./belajarbareng-3/#Jobs-and-Cron-Jobs)
+	* [Scheduling](./belajarbareng-3/#Scheduling)
+	* [Volumes and Data](./belajarbareng-3/#Volumes-and-Data)
 * [**belajarbareng-4**](./belajarbareng-4/)
-	* Services of type LoadBalancer
-	* Nginx Ingress
-	* Install Cockpit
-	* Dynamic NFS Provisioner
-	* Helm Tiller
+	* [Services of type LoadBalancer](./belajarbareng-4/#Services-of-type-LoadBalancer)
+	* [Nginx Ingress](./belajarbareng-4/#Nginx-Ingress)
+	* [Install Cockpit](./belajarbareng-4/#Install-Cockpit)
+	* [Dynamic NFS Provisioner](./belajarbareng-4/#Dynamic-NFS-Provisioner)
+	* [Helm Tiller](./belajarbareng-4/#Helm-Tiller)
 * [**belajarbareng-5**](./belajarbareng-5/)
 	* [Helm Chart](./belajarbareng-5/#Helm-Chart)
-	* Kubernetes Dashboard
-	* Prometheus
-	* Grafana
-	* Rancher
+	* [Kubernetes Dashboard](./belajarbareng-5/Kubernetes-Dashboard)
+	* [Prometheus](./belajarbareng-5/#Prometheus)
+	* [Grafana](./belajarbareng-5/#Grafana)
+	* [Rancher](./belajarbareng-5/#Dynamic-NFS-Provisioner)
