@@ -2,7 +2,7 @@
 
 ## Table of Contents
 * [Helm Chart](#Helm-Chart)
-* [Kubernetes Dashboard](Kubernetes-Dashboard)
+* [Kubernetes Dashboard](#Kubernetes-Dashboard)
 * [Prometheus](#Prometheus)
 * [Grafana](#Grafana)
 * [Rancher](#Dynamic-NFS-Provisioner)

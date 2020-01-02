@@ -1,0 +1,12 @@
+$TTL 86400
+@   1h  IN SOA  okd.example.lab.  root.example.lab. (
+            2019052901  ; serial
+            2H          ; refresh
+            15          ; retry
+            1W          ; expiry
+            2H )        ; minimum
+
+@    IN  NS   okd.example.lab.
+@    IN  PTR  example.lab
+
+206  IN  PTR  okd.example.lab.

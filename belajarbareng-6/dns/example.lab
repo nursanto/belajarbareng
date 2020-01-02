@@ -1,0 +1,13 @@
+$TTL 1D
+@   IN SOA  okd.example.lab.  root.example.lab. (
+            2019052001  ; serial
+            1D          ; refresh
+            2H          ; retry
+            1W          ; expiry
+            2D )        ; minimum
+
+@           IN	NS       okd.example.com.
+
+okd         IN	A    192.168.6.206
+*.okd       IN	A    192.168.6.206
+

@@ -28,7 +28,7 @@
 	* [Helm Tiller](./belajarbareng-4/#Helm-Tiller)
 * [**belajarbareng-5**](./belajarbareng-5/)
 	* [Helm Chart](./belajarbareng-5/#Helm-Chart)
-	* [Kubernetes Dashboard](./belajarbareng-5/Kubernetes-Dashboard)
+	* [Kubernetes Dashboard](./belajarbareng-5/#Kubernetes-Dashboard)
 	* [Prometheus](./belajarbareng-5/#Prometheus)
 	* [Grafana](./belajarbareng-5/#Grafana)
 	* [Rancher](./belajarbareng-5/#Dynamic-NFS-Provisioner)
