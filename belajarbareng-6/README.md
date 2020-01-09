@@ -6,6 +6,7 @@
 
 
 ### Jenkins
+	docker run -d -p 5000:5000 --restart always --name registry -v docker:/var/lib/registry registry:2
 	helm install jenkins stable/jenkins --values /root/materials/jenkins.value
 
 
