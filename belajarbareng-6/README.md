@@ -8,12 +8,12 @@
 ### Jenkins
 	docker run -d -p 5000:5000 --restart always --name registry -v docker:/var/lib/registry registry:2
 	kubectl create namespace jenkins
-	helm install jenkins stable/jenkins --values /root/materials/jenkins.value -n jenkins
+	helm install jenkins stable/jenkins --values ./materials/jenkins.value -n jenkins
 
 
 ### Horizontal Pod Autoscaler
 	kubectl create namespace metrics-server
-	helm install metric-servers stable/metrics-server --values /root/materials/metrics-server.value -n metrics-server
+	helm install metric-servers stable/metrics-server --values ./materials/metrics-server.value -n metrics-server
 	kubectl run php-apache --image=k8s.gcr.io/hpa-example --requests=cpu=200m --limits=cpu=500m --expose --port=80
 	kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=5
 	kubectl get hpa
