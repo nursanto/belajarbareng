@@ -6,7 +6,7 @@ $TTL 1D
             1W          ; expiry
             2D )        ; minimum
 
-@           IN	NS       okd.example.com.
+@           IN	NS       okd.example.lab.
 
 okd         IN	A    192.168.6.206
 *.okd       IN	A    192.168.6.206
