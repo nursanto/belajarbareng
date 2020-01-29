@@ -1,7 +1,7 @@
 # Belajar Bareng 7
 
 ## Install Openshift
-* [node](node)
+* [node](#node)
 * [all node](#all-node)
 * [master/bastion node](#master/bastion-node)
 
