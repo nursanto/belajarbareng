@@ -8,11 +8,11 @@
 ### node
 |   Role   |         FQDN        |   IP Address  |    OS    |  RAM | CPU | Disk | Partition |
 |----------|---------------------|---------------|----------|------|-----|------|-----------|
-|  master  | master.example.lab  | 192.168.6.208 | CentOS 7 |  4G  |  4  | sda  |  root fs  |
+|  master  | master.plowoh.lab   | 192.168.6.208 | CentOS 7 |  4G  |  4  | sda  |  root fs  |
 |          |                     |               |          |      |     | sdb  |     -     | 
-|  node    | node.example.lab    | 192.168.6.206 | CentOS 7 |  4G  |  4  | sda  |  root fs  |
+|  node    | node.plowoh.lab     | 192.168.6.206 | CentOS 7 |  4G  |  4  | sda  |  root fs  |
 |          |                     |               |          |      |     | sdb  |     -     | 
-|  infra   | infra.example.lab   | 192.168.6.207 | CentOS 7 |  4G  |  4  | sda  |  root fs  |
+|  infra   | infra.plowoh.lab    | 192.168.6.207 | CentOS 7 |  4G  |  4  | sda  |  root fs  |
 |          |                     |               |          |      |     | sdb  |     -     | 
 
 
