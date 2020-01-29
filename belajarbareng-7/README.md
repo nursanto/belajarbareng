@@ -3,7 +3,7 @@
 ## Install Openshift
 * [node](#node)
 * [all node](#all-node)
-* [master/bastion node](#master/bastion-node)
+* [master/bastion node](#master-node)
 
 ### node
 |   Role   |         FQDN        |   IP Address  |    OS    |  RAM | CPU | Disk | Partition |
@@ -68,7 +68,7 @@
 ### 6.
 	reboot
 
-## master/bastion node
+## master node
 ### 1. 
 	wget https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.7.10-1.el7.ans.noarch.rpm
 	yum -y localinstall ansible-2.7.10-1.el7.ans.noarch.rpm
