@@ -88,7 +88,7 @@
 
 ### 5.
 	ansible all -i inventory.ini -m ping
-	ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
+	ansible-playbook -i inventory.ini openshift-ansible/playbooks/prerequisites.yml
 	ansible-playbook -i inventory.ini openshift-ansible/playbooks/deploy_cluster.yml -vvv
 
 ### 6. 
