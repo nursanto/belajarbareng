@@ -80,6 +80,7 @@
 	cd openshift-ansible && git fetch && git checkout release-3.11 && cd ..
 
 ### 3.
+	wget https://raw.githubusercontent.com/nursanto/belajarbareng/master/belajarbareng-7/materials/inventory.ini
 	vim inventory.ini
 
 ### 4.
