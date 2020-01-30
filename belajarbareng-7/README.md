@@ -18,6 +18,7 @@
 
 ## all node
 ### 1. Configure Hosts
+	hostnamectl set-hostname master.plowoh.lab
 	cat >> /etc/hosts << EOF
 	192.168.6.208   master.plowoh.lab
 	192.168.6.206   node.plowoh.lab
