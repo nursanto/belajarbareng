@@ -3,7 +3,7 @@
 ## Install Openshift
 * [node](#node)
 * [all node](#do-on-all-node)
-* [master/bastion node](#master-node)
+* [master node](#master-node)
 
 ### node
 |   Role   |         FQDN        |   IP Address  |    OS    |  RAM | CPU | Disk | Partition |
