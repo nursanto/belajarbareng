@@ -80,7 +80,7 @@
 	reboot
 
 ## master node
-### 1. 
+### 1. download ansible and install
 	wget https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.7.10-1.el7.ans.noarch.rpm
 	yum -y localinstall ansible-2.7.10-1.el7.ans.noarch.rpm
 	ansible --version
