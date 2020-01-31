@@ -1,12 +1,16 @@
 $TTL 86400
-@   1h  IN SOA  okd.example.lab.  root.example.lab. (
+@   1h  IN SOA  master.plowoh.lab.  root.plowoh.lab. (
             2019052901  ; serial
             2H          ; refresh
             15          ; retry
             1W          ; expiry
             2H )        ; minimum
 
-@    IN  NS   okd.example.lab.
-@    IN  PTR  example.lab
+@    IN  NS   master.plowoh.lab.
+@    IN  PTR  plowoh.lab
 
-206  IN  PTR  okd.example.lab.
+208  IN  PTR  master.plowoh.lab.
+208  IN  PTR  okd.plowoh.lab.
+206  IN  PTR  node.plowoh.lab.
+207  IN  PTR  infra.plowoh.lab.
+207  IN  PTR  apps.plowoh.lab.

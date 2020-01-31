@@ -1,0 +1,16 @@
+$TTL 1D
+@   IN SOA  okd.plowoh.lab.  root.plowoh.lab. (
+            2019052001  ; serial
+            1D          ; refresh
+            2H          ; retry
+            1W          ; expiry
+            2D )        ; minimum
+
+@           IN	NS       okd.plowoh.lab.
+
+master       IN	A    192.168.6.208
+okd 	     IN	A    192.168.6.208
+node 	     IN	A    192.168.6.206
+infra 	     IN	A    192.168.6.207
+*.apps       IN	A    192.168.6.207
+
