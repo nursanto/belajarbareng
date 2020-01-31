@@ -2,7 +2,7 @@
 
 ## Install Openshift
 * [node](#node)
-* [all node](#all-node)
+* [all node](#do-on-all-node)
 * [master/bastion node](#master-node)
 
 ### node
