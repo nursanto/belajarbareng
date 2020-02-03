@@ -35,7 +35,7 @@
 * [**belajarbareng-6**](./belajarbareng-6/)
 	* [Jenkins](./belajarbareng-6/#Jenkins)
 	* [Horizontal Pod Autoscaler](./belajarbareng-6/#Horizontal-Pod-Autoscaler)
-* [**belajarbareng-7**](./belajarbareng-7/)
+* [**belajarbareng-7 - Install Openshift**](./belajarbareng-7/)
 	* [node](./belajarbareng-7/#node)
 	* [all node](./belajarbareng-7/#do-on-all-node)
 	* [master node](./belajarbareng-7/#master-node)
