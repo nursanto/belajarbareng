@@ -5,7 +5,7 @@
 * [Kubernetes Dashboard](#Kubernetes-Dashboard)
 * [Prometheus](#Prometheus)
 * [Grafana](#Grafana)
-* [Rancher](#Dynamic-NFS-Provisioner)
+* [Rancher](#Rancher)
 
 
 ### Helm Chart
