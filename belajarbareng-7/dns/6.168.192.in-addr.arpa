@@ -13,4 +13,4 @@ $TTL 86400
 208  IN  PTR  okd.plowoh.lab.
 206  IN  PTR  node.plowoh.lab.
 207  IN  PTR  infra.plowoh.lab.
-207  IN  PTR  apps.plowoh.lab.
+
