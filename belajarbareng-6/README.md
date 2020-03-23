@@ -6,6 +6,16 @@
 
 
 ### Jenkins
+	workernode:
+	chmod 777 /var/run/docker.sock
+	cat >> /etc/docker/daemon.json << EOF
+	{
+		"insecure-registries": [192.168.26.41:5000]
+	}
+	EOF
+	systemctl reload docker
+
+
 	docker run -d -p 5000:5000 --restart always --name registry -v docker:/var/lib/registry registry:2
 	kubectl create namespace jenkins
 	helm install jenkins stable/jenkins --values ./materials/jenkins.value -n jenkins
