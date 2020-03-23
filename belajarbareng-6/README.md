@@ -10,7 +10,7 @@
 	chmod 777 /var/run/docker.sock
 	cat >> /etc/docker/daemon.json << EOF
 	{
-		"insecure-registries": [192.168.26.41:5000]
+		"insecure-registries": ["192.168.26.41:5000"]
 	}
 	EOF
 	systemctl reload docker
